@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template
 
-bp = Blueprint("pages", __name__)
+bp = Blueprint("routes", __name__)
 
 
 @bp.route("/")
+@bp.route("/index")
 def home():
     return render_template("pages/home.html")
 
