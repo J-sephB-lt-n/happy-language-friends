@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Message Board - {% block title %}{% endblock title %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy RAG Friends - {% block title %}{% endblock title %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <nav id="navbar">
-    <ul>
-      <li><a href="{{ url_for('routes.home') }}">Home</a></li>
-      <li><a href="{{ url_for('routes.about') }}">About</a></li>
-    </ul>
-  </nav>
+  <div class="navbar">
+    <p href="#" class="logo">Happy RAG Friends</p>
+    <div class="menu">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <!--  <div id="navbar-links">-->
+    <!--  <ul>-->
+    <!--    <li><a href="{{ url_for('routes.home') }}">Home</a></li>-->
+    <!--    <li><a href="{{ url_for('routes.about') }}">About</a></li>-->
+    <!--  </ul>-->
+    <!--  </div>-->
+    <!--</nav>-->
+  </div>
   <!--{% include("components/navbar.html") %}-->
 <section>
   <header>
