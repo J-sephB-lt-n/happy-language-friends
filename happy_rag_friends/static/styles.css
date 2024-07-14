@@ -31,6 +31,7 @@ body {
 
 .navbar .logo {
   flex: 1;
+  font-size: 2rem;
 }
 
 .navbar .logo:hover {
@@ -39,9 +40,5 @@ body {
 
 .navbar .menu {
   display: flex;
-  font-size: 5rem;
+  font-size: 4rem;
 }
-
-/*.navbar.responsive .menu {*/
-/*  display: block;*/
-/*}*/
