@@ -1,7 +1,7 @@
 /*colour palette */
 :root {
   --dark-grey: #1c1b1a;
-  --orange: #e3822d;
+  --orange: #ff7300;
 }
 
 body {
@@ -15,7 +15,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: green;
+  background-color: black;
   padding: 14px 20px;
 }
 
@@ -26,18 +26,22 @@ body {
 }
 
 .navbar a:hover {
-  background-color: #4caf50;
-  color: black;
+  color: var(--orange);
 }
 
 .navbar .logo {
   flex: 1;
 }
 
-.navbar .menu {
-  display: flex;
+.navbar .logo:hover {
+  color: var(--orange);
 }
 
-.navbar.responsive .menu {
-  display: block;
+.navbar .menu {
+  display: flex;
+  font-size: 5rem;
 }
+
+/*.navbar.responsive .menu {*/
+/*  display: block;*/
+/*}*/
