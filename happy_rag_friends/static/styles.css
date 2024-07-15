@@ -42,3 +42,8 @@ body {
   display: flex;
   font-size: 4rem;
 }
+
+.page-content-container {
+  margin-left: 15vw;
+  margin-right: 15vw;
+}
