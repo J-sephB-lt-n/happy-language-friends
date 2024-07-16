@@ -13,4 +13,15 @@
   </select>
   <input type="submit" value="&#128465;">
   <br><br>
+  <p style="display:inline">Advisor Name:&emsp;</p>
+  <input type="text" id="advisor-name" name="advisor-name" value="Joe">
+  <br><br>
+  <p style="display:inline">Advisor Personality: Joe is &emsp;</p>
+  <input type="text" id="advisor-personality" name="advisor-personality" value="an expert in business, and a seasoned business decision-maker.">
+  <br><br>
+  <p style="display:inline">Path to model file (GGUF): &emsp;</p>
+  <input type="file" id="model-path" name="model-path" accept=".gguf" />
+  <br><br>
+  <input type="submit" value="Apply Changes">
+  <input type="submit" value="Discard Changes">
 {% endblock content %}
