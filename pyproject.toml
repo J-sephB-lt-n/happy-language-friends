@@ -11,6 +11,7 @@ python = "^3.12"
 #llama-cpp-python = "^0.2.82"
 flask = "^3.0.3"
 importlib-resources = "^6.4.0"
+pydantic = "^2.8.2"
 
 
 [build-system]
