@@ -2,7 +2,7 @@ import flask
 
 # from flask import Blueprint, render_template
 
-import backend
+import src.db
 
 bp = flask.Blueprint("routes", __name__)
 
@@ -36,7 +36,7 @@ def general_settings():
 @bp.route("/backend/create_advisor", methods=["POST"])
 def create_advisor():
     input_json = flask.request.get_json()
-    status_text, status_code = backend.create_advisor(
+    status_text, status_code = src.db.create_advisor(
         advisor_name=input_json["advisor_name"],
         personality_description=input_json["personality_description"],
         path_to_model=input_json["path_to_model"],

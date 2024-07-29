@@ -40,4 +40,4 @@ def create_package_database_if_not_exists():
         )
         conn.commit()
         conn.close()
-        print(f"created package database at {db_path}")
+        print(f"created package database at {config.DB_PATH}")
