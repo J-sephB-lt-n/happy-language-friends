@@ -1,6 +1,6 @@
-import flask
+import json
 
-# from flask import Blueprint, render_template
+import flask
 
 import src.db
 
@@ -44,6 +44,7 @@ def create_advisor():
     return flask.Response(status_text, status=status_code)
 
 
-# @bp.route("/backend/fetch_advisor_info")
-# def fetch_advisor_info():
-#
+@bp.route("/backend/get_advisor_details", methods=["GET"])
+def get_advisor_details():
+    advisor_details: list[dict] = src.db.get_advisor_details()
+    return flask.jsonify(advisor_details)
