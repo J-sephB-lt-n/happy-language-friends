@@ -2,13 +2,12 @@
 
 {% block header %}
   <h2>{% block title %}Advisor Settings{% endblock title %}</h2>
+  <script src="static/javascript/advisor-settings-page.js" defer></script>
 {% endblock header %}
 
 {% block content %}
   <label for="select-advisor">Select an Advisor: </label>
   <select name="select-advisor" id="select-advisor">
-    <option value="advisor-1">Advisor 1</option>
-    <option value="advisor-2">Advisor 2</option>
     <option value="create-new-advisor">[+] create new advisor</option>
   </select>
   <input type="submit" value="&#128465;">
