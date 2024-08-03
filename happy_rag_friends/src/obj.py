@@ -20,9 +20,9 @@ class Advisor(pydantic.BaseModel):
     @pydantic.field_validator("personality_description")
     def valid_personality_description(cls, v: str) -> str:
         v = v.strip()
-        if not (2 <= len(v) <= 999):
+        if not (2 <= len(v) <= 500):
             raise ValueError(
-                "Advisor personality description must be between 2 and 999 characters long"
+                "Advisor personality description must be between 2 and 500 characters long"
             )
         return v
 
