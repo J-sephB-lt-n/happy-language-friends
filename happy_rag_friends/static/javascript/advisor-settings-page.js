@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectAdvisor = document.getElementById("select-advisor");
 
       // Remove the "create-new-advisor" option temporarily
-      const createNewOption = selectAdvisor.querySelector(
+      const createNewAdvisorOption = selectAdvisor.querySelector(
         'option[value="create-new-advisor"]',
       );
-      selectAdvisor.removeChild(createNewOption);
+      selectAdvisor.removeChild(createNewAdvisorOption);
 
       data.forEach((advisor) => {
         const option = document.createElement("option");
@@ -17,23 +17,43 @@ document.addEventListener("DOMContentLoaded", function () {
         selectAdvisor.appendChild(option);
       });
 
-      selectAdvisor.appendChild(createNewOption); // Add the "create-new-advisor" option back to the end of the list
+      selectAdvisor.appendChild(createNewAdvisorOption); // Add the "create-new-advisor" option back to the end of the select-advisor dropdown
       selectAdvisor.selectedIndex = 0;
 
+      // Store advisor data for later use
+      const advisorData = data.reduce((acc, advisor) => {
+        acc[advisor.advisor_name] = advisor;
+        return acc;
+      }, {});
+
+      // Update input boxes when a new advisor is selected
       var advisorNameInput = document.getElementById("advisor-name");
-      function updateAdvisorName() {
+      var advisorPersonalityInput = document.getElementById(
+        "advisor-personality",
+      );
+
+      function updateInputBoxContents() {
         var selectedAdvisor = selectAdvisor.value;
         advisorNameInput.value = selectedAdvisor;
+        if (advisorData[selectedAdvisor]) {
+          advisorPersonalityInput.value =
+            advisorData[selectedAdvisor].personality_description;
+        } else {
+          advisorPersonalityInput.value = "";
+        }
       }
-      selectAdvisor.addEventListener("change", updateAdvisorName); // update advisor-name input box when different advisor is selected
-      updateAdvisorName(); // update advisor-name input box on page load
+
+      selectAdvisor.addEventListener("change", updateInputBoxContents); // Update advisor-name and advisor-personality input boxes when different advisor is selected
+      updateInputBoxContents(); // update input boxes on page load
+
+      // // update input boxes when a new advisor is selected
+      // var advisorNameInput = document.getElementById("advisor-name");
+      // function updateAdvisorName() {
+      //   var selectedAdvisor = selectAdvisor.value;
+      //   advisorNameInput.value = selectedAdvisor;
+      // }
+      // selectAdvisor.addEventListener("change", updateAdvisorName); // update advisor-name input box when different advisor is selected
+      // updateAdvisorName(); // update advisor-name input box on page load
     })
     .catch((error) => console.error("Error fetching advisor details:", error));
 });
-
-document
-  .getElementById("select-advisor")
-  .addEventListener("change", function () {
-    var selectedAdvisor = this.value;
-    document.getElementById("advisor-name").value = selectedAdvisor;
-  });
