@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectAdvisor.selectedIndex = 0;
 
       // Store advisor data for later use
-      const advisorData = data.reduce((acc, advisor) => {
+      const advisorsData = data.reduce((acc, advisor) => {
         acc[advisor.advisor_name] = advisor;
         return acc;
       }, {});
@@ -31,29 +31,22 @@ document.addEventListener("DOMContentLoaded", function () {
       var advisorPersonalityInput = document.getElementById(
         "advisor-personality",
       );
-
+      var advisorModelPath = document.getElementById("model-path");
       function updateInputBoxContents() {
         var selectedAdvisor = selectAdvisor.value;
         advisorNameInput.value = selectedAdvisor;
-        if (advisorData[selectedAdvisor]) {
+        if (advisorsData[selectedAdvisor]) {
           advisorPersonalityInput.value =
-            advisorData[selectedAdvisor].personality_description;
+            advisorsData[selectedAdvisor].personality_description;
+          advisorModelPath.value = advisorsData[selectedAdvisor].path_to_model;
         } else {
           advisorPersonalityInput.value = "";
+          advisorModelPath.value = "";
         }
       }
 
       selectAdvisor.addEventListener("change", updateInputBoxContents); // Update advisor-name and advisor-personality input boxes when different advisor is selected
       updateInputBoxContents(); // update input boxes on page load
-
-      // // update input boxes when a new advisor is selected
-      // var advisorNameInput = document.getElementById("advisor-name");
-      // function updateAdvisorName() {
-      //   var selectedAdvisor = selectAdvisor.value;
-      //   advisorNameInput.value = selectedAdvisor;
-      // }
-      // selectAdvisor.addEventListener("change", updateAdvisorName); // update advisor-name input box when different advisor is selected
-      // updateAdvisorName(); // update advisor-name input box on page load
     })
     .catch((error) => console.error("Error fetching advisor details:", error));
 });
