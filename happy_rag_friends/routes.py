@@ -1,4 +1,4 @@
-import json
+from pathlib import Path
 
 import flask
 
@@ -48,3 +48,11 @@ def create_advisor():
 def get_advisor_details():
     advisor_details: list[dict] = src.db.get_advisor_details()
     return flask.jsonify(advisor_details)
+
+
+@bp.route("/backend/check_file_exists", methods=["GET"])
+def check_file_exists():
+    file_path: str = flask.request.args["file_path"]
+    if Path(file_path).is_file:
+        return flask.jsonify({"file_exists": True})
+    return flask.jsonify({"file_exists": False})
