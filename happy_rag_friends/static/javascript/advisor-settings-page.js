@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return acc;
       }, {});
 
-      // Update input boxes when a new advisor is selected
+      // Update elements when a new advisor is selected
       var advisorNameInput = document.getElementById("advisor-name");
       var advisorPersonalityInput = document.getElementById(
         "advisor-personality",
@@ -34,14 +34,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var advisorModelPath = document.getElementById("model-path");
       function updateInputBoxContents() {
         var selectedAdvisor = selectAdvisor.value;
-        advisorNameInput.value = selectedAdvisor;
+        const applyChangesButton = document.getElementById("apply-changes");
         if (advisorsData[selectedAdvisor]) {
+          advisorNameInput.value = selectedAdvisor;
           advisorPersonalityInput.value =
             advisorsData[selectedAdvisor].personality_description;
           advisorModelPath.value = advisorsData[selectedAdvisor].path_to_model;
+          applyChangesButton.value = "Apply Changes";
         } else {
-          advisorPersonalityInput.value = "";
-          advisorModelPath.value = "";
+          advisorNameInput.value = "<advisor name here>";
+          advisorPersonalityInput.value =
+            "<advisor personality description here>";
+          advisorModelPath.value = "/specify/path/to/your/model/here.gguf";
+          applyChangesButton.value = "Create New Advisor";
         }
       }
 
@@ -58,9 +63,9 @@ function checkFilePath() {
     .then((response) => response.json())
     .then((data) => {
       if (data.filepath_is_valid) {
-        alert("File path is valid");
+        alert("Model file path is valid");
       } else {
-        alert(`File path is invalid (${data.error})`);
+        alert(`Model file path is invalid (${data.error})`);
       }
     })
     .catch((error) => {
