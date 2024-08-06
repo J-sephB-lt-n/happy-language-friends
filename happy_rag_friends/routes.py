@@ -50,9 +50,18 @@ def get_advisor_details():
     return flask.jsonify(advisor_details)
 
 
-@bp.route("/backend/check_file_exists", methods=["GET"])
-def check_file_exists():
-    file_path: str = flask.request.args["file_path"]
-    if Path(file_path).is_file:
-        return flask.jsonify({"file_exists": True})
-    return flask.jsonify({"file_exists": False})
+@bp.route("/backend/check_model_filepath_valid", methods=["GET"])
+def check_model_filepath_valid():
+    model_filepath: str = flask.request.args["filepath"]
+    if not Path(model_filepath).is_file():
+        return flask.jsonify(
+            {"filepath_is_valid": False, "error": "There is no file at this path"}
+        )
+    if not Path(model_filepath).suffix == ".gguf":
+        return flask.jsonify(
+            {
+                "filepath_is_valid": False,
+                "error": "Model file must have .gguf extension",
+            }
+        )
+    return flask.jsonify({"filepath_is_valid": True, "error": None})

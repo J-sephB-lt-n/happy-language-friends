@@ -50,3 +50,21 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error fetching advisor details:", error));
 });
+
+function checkFilePath() {
+  const filePath = document.getElementById("model-path").value;
+  const url = `http://127.0.0.1:5000/backend/check_model_filepath_valid?filepath=${encodeURIComponent(filePath)}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.filepath_is_valid) {
+        alert("File path is valid");
+      } else {
+        alert(`File path is invalid (${data.error})`);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred while checking the model file path");
+    });
+}
