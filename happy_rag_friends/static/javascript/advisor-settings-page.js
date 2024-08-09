@@ -1,3 +1,35 @@
+function updateAdvisorSelectList() {
+  fetch("http://127.0.0.1:5000/backend/get_advisor_details")
+    .then((response) => response.json())
+    .then((data) => {
+      const selectAdvisor = document.getElementById("select-advisor");
+
+      // Remove the "create-new-advisor" option temporarily
+      const createNewAdvisorOption = selectAdvisor.querySelector(
+        'option[value="create-new-advisor"]',
+      );
+      selectAdvisor.removeChild(createNewAdvisorOption);
+
+      selectAdvisor.options.length = 0; // clear list
+
+      data.forEach((advisor) => {
+        const option = document.createElement("option");
+        option.value = advisor.advisor_name;
+        option.textContent = advisor.advisor_name;
+        selectAdvisor.appendChild(option);
+      });
+
+      selectAdvisor.appendChild(createNewAdvisorOption); // Add the "create-new-advisor" option back to the end of the select-advisor dropdown
+      // selectAdvisor.selectedIndex = 0;
+
+      const advisorsData = data.reduce((acc, advisor) => {
+        acc[advisor.advisor_name] = advisor;
+        return acc;
+      }, {});
+      return advisorsData;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   fetch("http://127.0.0.1:5000/backend/get_advisor_details")
     .then((response) => response.json())
@@ -96,6 +128,7 @@ function createOrUpdateAdvisor() {
     })
       .then((response) => {
         if (response.ok) {
+          updateAdvisorSelectList();
           return response.text();
         } else {
           return response.text().then((text) => {
