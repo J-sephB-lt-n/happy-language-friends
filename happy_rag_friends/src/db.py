@@ -47,7 +47,10 @@ def create_advisor(
             )
             conn.commit()
         except sqlite3.IntegrityError:
-            return "CONFLICT", 409
+            return (
+                "CONFLICT\nAn advisor with this name already exists in the database",
+                409,
+            )
         return "OK", 200
 
 

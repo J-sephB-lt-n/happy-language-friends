@@ -73,3 +73,43 @@ function checkFilePath() {
       alert("An error occurred while checking the model file path");
     });
 }
+
+function createOrUpdateAdvisor() {
+  const applyChangesButton = document.getElementById("apply-changes");
+  const advisorNameInput = document.getElementById("advisor-name");
+  const advisorPersonalityInput = document.getElementById(
+    "advisor-personality",
+  );
+  const advisorModelPath = document.getElementById("model-path");
+  const request_data = {
+    advisor_name: advisorNameInput.value,
+    personality_description: advisorPersonalityInput.value,
+    path_to_model: advisorModelPath.value,
+  };
+  if (applyChangesButton.value === "Create New Advisor") {
+    fetch("http://127.0.0.1:5000/backend/create_advisor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request_data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          return response.text().then((text) => {
+            throw new Error(text);
+          });
+        }
+      })
+      .then((data) => {
+        alert(`Successfully created advisor '${advisorNameInput.value}'`);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  } else {
+    alert("update advisor not implemented yet");
+  }
+}

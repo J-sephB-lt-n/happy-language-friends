@@ -50,6 +50,11 @@ def get_advisor_details():
     return flask.jsonify(advisor_details)
 
 
+# @bp.route("/backend/update_advisor", methods=["PATCH"])
+# def update_advisor_details():
+#     status_text, status_code =
+
+
 @bp.route("/backend/check_model_filepath_valid", methods=["GET"])
 def check_model_filepath_valid():
     model_filepath: str = flask.request.args["filepath"]
