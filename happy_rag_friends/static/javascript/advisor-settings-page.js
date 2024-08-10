@@ -86,6 +86,17 @@ document.addEventListener("DOMContentLoaded", function () {
       updateInputBoxContents(); // update input boxes on page load
     })
     .catch((error) => console.error("Error fetching advisor details:", error));
+
+  // make delete advisor button disappear whenever "create-new-advisor" is selected
+  const selectAdvisor = document.getElementById("select-advisor");
+  const deleteAdvisorForm = document.getElementById("delete-advisor");
+  selectAdvisor.addEventListener("change", function () {
+    if (selectAdvisor.value === "create-new-advisor") {
+      deleteAdvisorForm.style.display = "none";
+    } else {
+      deleteAdvisorForm.style.display = "inline";
+    }
+  });
 });
 
 function checkFilePath() {
@@ -144,5 +155,19 @@ function createOrUpdateAdvisor() {
       });
   } else {
     alert("update advisor not implemented yet");
+  }
+}
+
+function confirmDeleteAdvisor() {
+  const advisorNameInput = document.getElementById("advisor-name");
+  let confirmDelete = confirm(
+    `Are you sure that you want to permanently delete advisor '${advisorNameInput.value}?'`,
+  );
+
+  if (confirmDelete) {
+    alert(`Deleted advisor '${advisorNameInput.value}'`);
+    return true;
+  } else {
+    return false;
   }
 }

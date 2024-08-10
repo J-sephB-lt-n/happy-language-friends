@@ -10,7 +10,9 @@
   <select name="select-advisor" id="select-advisor">
     <option value="create-new-advisor">[+] create new advisor</option>
   </select>
-  <input type="submit" value="&#128465;">
+  <form id="delete-advisor" style="display:inline" onsubmit="return confirmDeleteAdvisor();">
+    <input type="submit" value="&#128465;">
+  </form>
   <br><br>
   <input type="text" id="advisor-name" name="advisor-name" value="">
   <!--<br><br>-->
