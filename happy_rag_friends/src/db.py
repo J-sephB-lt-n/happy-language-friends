@@ -1,7 +1,9 @@
 """Functions for interacting with the database"""
 
 import contextlib
+import re
 import sqlite3
+import subprocess
 
 import pydantic
 
@@ -69,3 +71,19 @@ def get_advisor_details():
         """
         ).fetchall()
     return advisors_info
+
+
+def list_available_models():
+    """Returns a list of LLMs which can be used in this application"""
+    return [
+        model_name
+        for model_name in subprocess.run(
+            ["litgpt", "download", "list"], capture_output=True, text=True
+        ).stdout.split("\n")
+        if re.match(r"[^\s]+/[^\s]+", model_name)
+    ]
+
+
+def list_downloaded_models():
+    """Returns a list of LLMs which have been previously downloaded"""
+    pass

@@ -70,3 +70,10 @@ def check_model_filepath_valid():
             }
         )
     return flask.jsonify({"filepath_is_valid": True, "error": None})
+
+
+@bp.route("backend/list_available_models", methods=["GET"])
+def list_available_models():
+    available_models: list[str] = src.db.list_available_models()
+    downloaded_models: list[str] = src.db.list_downloaded_models()
+    return flask.Response("OK", status=200)
