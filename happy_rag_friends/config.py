@@ -1,3 +1,6 @@
 from pathlib import Path
+from typing import Final
 
-DB_PATH = Path.home() / ".happy-rag-friends" / "package_data.sqlite"
+PROJECT_DATA_PATH: Final[Path] = Path.home() / ".happy-rag-friends"
+DB_PATH: Final[Path] = PROJECT_DATA_PATH / "package_data.sqlite"
+DOWNLOADED_MODELS_PATH: Final[Path] = PROJECT_DATA_PATH / "downloaded_models"
