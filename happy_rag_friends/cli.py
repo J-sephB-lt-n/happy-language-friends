@@ -13,6 +13,8 @@ def main():
     args = arg_parser.parse_args()
     if args.action == "serve":
         app.run(debug=True, port=5000)
+    elif args.action == "uninstall":
+        raise NotImplementedError("action 'uninstall' is not yet implemented")
 
 
 if __name__ == "__main__":
