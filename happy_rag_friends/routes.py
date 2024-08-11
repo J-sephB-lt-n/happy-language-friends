@@ -1,7 +1,9 @@
+import subprocess
 from pathlib import Path
 
 import flask
 
+import config
 import src.db
 
 bp = flask.Blueprint("routes", __name__)
@@ -72,8 +74,36 @@ def check_model_filepath_valid():
     return flask.jsonify({"filepath_is_valid": True, "error": None})
 
 
-@bp.route("backend/list_available_models", methods=["GET"])
+@bp.route("/backend/list_available_models", methods=["GET"])
 def list_available_models():
     available_models: list[str] = src.db.list_available_models()
-    downloaded_models: list[str] = src.db.list_downloaded_models()
-    return flask.Response("OK", status=200)
+    # downloaded_models: list[str] = src.db.list_downloaded_models()
+    return flask.jsonify(available_models)
+
+
+@bp.route("/backend/download_model", methods=["POST"])
+def download_model():
+    input_json = flask.request.get_json()
+    model_name: str = input_json["model_name"]
+    available_models: list[str] = src.db.list_available_models()
+    if model_name not in available_models:
+        return flask.Response(f"Model '{model_name}' is not available", status=404)
+    try:
+        subprocess.run(
+            [
+                "litgpt",
+                "download",
+                model_name,
+                "--checkpoint_dir",
+                config.DOWNLOADED_MODELS_PATH,
+            ],
+            check=True,
+        )
+    except subprocess.CalledProcessError as err:
+        return flask.Response(
+            f"Error while attempting to download model:\n{err}", status=500
+        )
+    return flask.Response(
+        f"Successfully downloaded model '{model_name}' to {config.DOWNLOADED_MODELS_PATH}/{model_name}",
+        status=200,
+    )
