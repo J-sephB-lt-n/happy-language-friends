@@ -1,9 +1,7 @@
 """Functions for interacting with the database"""
 
 import contextlib
-import re
 import sqlite3
-import subprocess
 
 import pydantic
 
@@ -17,13 +15,13 @@ def sqlite_dict_factory(cursor, row):
     return {key: value for key, value in zip(fields, row)}
 
 
-def create_advisor(advisor_name: str, personality_description: str, model_name: str):
+def create_advisor(advisor_name: str, personality_description: str, llm_name: str):
     """Adds an advisor to the database"""
     try:
         advisor = Advisor(
             advisor_name=advisor_name,
             personality_description=personality_description,
-            model_name=model_name,
+            llm_name=llm_name,
         )
     except pydantic.ValidationError as error:
         return f"UNPROCESSABLE ENTITY\n{error}", 422
@@ -33,14 +31,14 @@ def create_advisor(advisor_name: str, personality_description: str, model_name: 
         try:
             cursor.execute(
                 """
-            INSERT INTO advisors (advisor_name, personality_description, model_name)
+            INSERT INTO advisors (advisor_name, personality_description, llm_name)
             VALUES (?, ?, ?)
             ;
             """,
                 (
                     advisor.advisor_name,
                     advisor.personality_description,
-                    advisor.model_name,
+                    advisor.llm_name,
                 ),
             )
             conn.commit()
@@ -61,25 +59,9 @@ def get_advisor_details():
             """                                                                     
             SELECT      advisor_name
                     ,   personality_description
-                    ,   model_name
+                    ,   llm_name 
             FROM        advisors
             ;                                                                           
         """
         ).fetchall()
     return advisors_info
-
-
-def list_available_models():
-    """Returns a list of LLMs which can be used in this application"""
-    return [
-        model_name
-        for model_name in subprocess.run(
-            ["litgpt", "download", "list"], capture_output=True, text=True
-        ).stdout.split("\n")
-        if re.match(r"[^\s]+/[^\s]+", model_name)
-    ]
-
-
-def list_downloaded_models():
-    """Returns a list of LLMs which have been previously downloaded"""
-    pass

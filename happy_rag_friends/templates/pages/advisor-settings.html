@@ -23,6 +23,9 @@
   <input style="display:inline" type="text" id="model-path" name="model-path" value="" size="60" maxlength="300">
   <input type="submit" value="Check Path" onclick="checkFilePath()">
   <br><br>
+  <label for="select-llm">Select a Language Model: </label>
+  <select name="select-llm" id="select-llm"></select>
+  <br><br>
   <input type="submit" id="apply-changes" value="Apply Changes" onclick="createOrUpdateAdvisor()">
   <input type="submit" id="discard-changes" value="Discard Changes">
 {% endblock content %}

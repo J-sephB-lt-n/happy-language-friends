@@ -11,8 +11,12 @@ poetry build
 
 # TODO
 
-- LitGPT
+## Requirements
 
-  - Where does it store downloaded models to? (so we can warn the user)
+- Advisors each get their own data folder in ~/.happy-rag-friends
 
-  - Can we give an indication of which models are already downloaded?
+  - Deleting an advisor must also delete their folder and contents
+
+  - Creating an advisor must create their folder structure
+
+  - Ability to add and delete documents

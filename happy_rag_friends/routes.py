@@ -1,10 +1,9 @@
 import subprocess
-from pathlib import Path
 
 import flask
 
-import config
-from .src import db
+from happy_rag_friends import config
+from happy_rag_friends.src import db, llm
 
 bp = flask.Blueprint("routes", __name__)
 
@@ -41,7 +40,7 @@ def create_advisor():
     status_text, status_code = db.create_advisor(
         advisor_name=input_json["advisor_name"],
         personality_description=input_json["personality_description"],
-        path_to_model=input_json["path_to_model"],
+        llm_name=input_json["llm_name"],
     )
     return flask.Response(status_text, status=status_code)
 
@@ -57,43 +56,31 @@ def get_advisor_details():
 #     status_text, status_code =
 
 
-@bp.route("/backend/check_model_filepath_valid", methods=["GET"])
-def check_model_filepath_valid():
-    model_filepath: str = flask.request.args["filepath"]
-    if not Path(model_filepath).is_file():
-        return flask.jsonify(
-            {"filepath_is_valid": False, "error": "There is no file at this path"}
-        )
-    if not Path(model_filepath).suffix == ".gguf":
-        return flask.jsonify(
-            {
-                "filepath_is_valid": False,
-                "error": "Model file must have .gguf extension",
-            }
-        )
-    return flask.jsonify({"filepath_is_valid": True, "error": None})
-
-
-@bp.route("/backend/list_available_models", methods=["GET"])
-def list_available_models():
-    available_models: list[str] = db.list_available_models()
-    # downloaded_models: list[str] = db.list_downloaded_models()
-    return flask.jsonify(available_models)
+@bp.route("/backend/get_llm_list", methods=["GET"])
+def get_llm_list():
+    available_models: list[str] = llm.list_available_models()
+    downloaded_models: list[str] = llm.list_downloaded_models()
+    return flask.jsonify(
+        {
+            llm_name: {"downloaded": llm_name in downloaded_models}
+            for llm_name in available_models
+        }
+    )
 
 
 @bp.route("/backend/download_model", methods=["POST"])
 def download_model():
     input_json = flask.request.get_json()
-    model_name: str = input_json["model_name"]
+    llm_name: str = input_json["llm_name"]
     available_models: list[str] = db.list_available_models()
-    if model_name not in available_models:
-        return flask.Response(f"Model '{model_name}' is not available", status=404)
+    if llm_name not in available_models:
+        return flask.Response(f"Model '{llm_name}' is not available", status=404)
     try:
         subprocess.run(
             [
                 "litgpt",
                 "download",
-                model_name,
+                llm_name,
                 "--checkpoint_dir",
                 config.DOWNLOADED_MODELS_PATH,
             ],
@@ -104,6 +91,6 @@ def download_model():
             f"Error while attempting to download model:\n{err}", status=500
         )
     return flask.Response(
-        f"Successfully downloaded model '{model_name}' to {config.DOWNLOADED_MODELS_PATH}/{model_name}",
+        f"Successfully downloaded model '{llm_name}' to {config.DOWNLOADED_MODELS_PATH}/{llm_name}",
         status=200,
     )
