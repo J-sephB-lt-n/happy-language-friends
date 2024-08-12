@@ -1,8 +1,9 @@
 """Command-line utility for starting the web app"""
 
 import argparse
+import shutil
 
-from happy_rag_friends import create_app
+from happy_rag_friends import config, create_app
 
 app = create_app()
 
@@ -14,7 +15,11 @@ def main():
     if args.action == "serve":
         app.run(debug=True, port=5000)
     elif args.action == "uninstall":
-        raise NotImplementedError("action 'uninstall' is not yet implemented")
+        try:
+            print("Deleting package data from", config.PROJECT_DATA_PATH)
+            shutil.rmtree(config.PROJECT_DATA_PATH)
+        except Exception as err:
+            raise RuntimeError(f"uninstall failed with error\n{err}")
 
 
 if __name__ == "__main__":

@@ -7,27 +7,23 @@ import subprocess
 
 import pydantic
 
-import config
-from src.obj import Advisor
+from happy_rag_friends import config
+from happy_rag_friends.src.obj import Advisor
 
 
 def sqlite_dict_factory(cursor, row):
-    """Setting conn.row_factory=sqlite_dict_factory makes .fetchone(), .fetchall() etc. returning lists of dictionaries"""
+    """Setting conn.row_factory=sqlite_dict_factory makes .fetchone(), .fetchall() etc. return lists of dictionaries"""
     fields = [column[0] for column in cursor.description]
     return {key: value for key, value in zip(fields, row)}
 
 
-def create_advisor(
-    advisor_name: str,
-    personality_description: str,
-    path_to_model: str,
-):
+def create_advisor(advisor_name: str, personality_description: str, model_name: str):
     """Adds an advisor to the database"""
     try:
         advisor = Advisor(
             advisor_name=advisor_name,
             personality_description=personality_description,
-            path_to_model=path_to_model,
+            model_name=model_name,
         )
     except pydantic.ValidationError as error:
         return f"UNPROCESSABLE ENTITY\n{error}", 422
@@ -37,14 +33,14 @@ def create_advisor(
         try:
             cursor.execute(
                 """
-            INSERT INTO advisors (advisor_name, personality_description, path_to_model)
+            INSERT INTO advisors (advisor_name, personality_description, model_name)
             VALUES (?, ?, ?)
             ;
             """,
                 (
                     advisor.advisor_name,
                     advisor.personality_description,
-                    advisor.path_to_model,
+                    advisor.model_name,
                 ),
             )
             conn.commit()
@@ -65,7 +61,7 @@ def get_advisor_details():
             """                                                                     
             SELECT      advisor_name
                     ,   personality_description
-                    ,   path_to_model
+                    ,   model_name
             FROM        advisors
             ;                                                                           
         """

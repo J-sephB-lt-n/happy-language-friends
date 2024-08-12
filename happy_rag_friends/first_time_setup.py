@@ -4,7 +4,7 @@ import sqlite3
 import warnings
 from pathlib import Path
 
-import config
+from happy_rag_friends import config
 
 
 class PersistentDataWarning(Warning):

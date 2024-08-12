@@ -1,6 +1,6 @@
 from flask import Flask
 
-from happy_rag_friends import routes, first_time_setup
+from happy_rag_friends import first_time_setup, routes
 
 
 def create_app():

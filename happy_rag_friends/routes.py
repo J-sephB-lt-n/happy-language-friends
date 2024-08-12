@@ -4,7 +4,7 @@ from pathlib import Path
 import flask
 
 import config
-import src.db
+from .src import db
 
 bp = flask.Blueprint("routes", __name__)
 
@@ -38,7 +38,7 @@ def general_settings():
 @bp.route("/backend/create_advisor", methods=["POST"])
 def create_advisor():
     input_json = flask.request.get_json()
-    status_text, status_code = src.db.create_advisor(
+    status_text, status_code = db.create_advisor(
         advisor_name=input_json["advisor_name"],
         personality_description=input_json["personality_description"],
         path_to_model=input_json["path_to_model"],
@@ -48,7 +48,7 @@ def create_advisor():
 
 @bp.route("/backend/get_advisor_details", methods=["GET"])
 def get_advisor_details():
-    advisor_details: list[dict] = src.db.get_advisor_details()
+    advisor_details: list[dict] = db.get_advisor_details()
     return flask.jsonify(advisor_details)
 
 
@@ -76,8 +76,8 @@ def check_model_filepath_valid():
 
 @bp.route("/backend/list_available_models", methods=["GET"])
 def list_available_models():
-    available_models: list[str] = src.db.list_available_models()
-    # downloaded_models: list[str] = src.db.list_downloaded_models()
+    available_models: list[str] = db.list_available_models()
+    # downloaded_models: list[str] = db.list_downloaded_models()
     return flask.jsonify(available_models)
 
 
@@ -85,7 +85,7 @@ def list_available_models():
 def download_model():
     input_json = flask.request.get_json()
     model_name: str = input_json["model_name"]
-    available_models: list[str] = src.db.list_available_models()
+    available_models: list[str] = db.list_available_models()
     if model_name not in available_models:
         return flask.Response(f"Model '{model_name}' is not available", status=404)
     try:
