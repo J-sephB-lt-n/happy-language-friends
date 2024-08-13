@@ -8,7 +8,7 @@
 {% block content %}
   <label for="select-advisor">Select an Advisor: </label>
   <select name="select-advisor" id="select-advisor">
-    <option value="create-new-advisor">[+] create new advisor</option>
+    <option value="temp-placeholder">..loading..</option>
   </select>
   <form id="delete-advisor" style="display:inline" onsubmit="return confirmDeleteAdvisor();">
     <input type="submit" value="&#128465;">
@@ -24,7 +24,9 @@
   <input type="submit" value="Check Path" onclick="checkFilePath()">
   <br><br>
   <label for="select-llm">Select a Language Model: </label>
-  <select name="select-llm" id="select-llm"></select>
+  <select name="select-llm" id="select-llm">
+    <option value="temp-placeholder">..loading..</option>
+  </select>
   <br><br>
   <input type="submit" id="apply-changes" value="Apply Changes" onclick="createOrUpdateAdvisor()">
   <input type="submit" id="discard-changes" value="Discard Changes">

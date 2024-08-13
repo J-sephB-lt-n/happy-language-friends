@@ -11,7 +11,23 @@
     <option value="advisor-2">Advisor 2</option>
   </select>
   <br><br>
-  <!--<label for="user-query">Enter your query:</label><br>-->
+  <details>
+  <summary>RAG Settings</summary>
+  <h4 style="display:inline">Chunk Strategy Mix:&emsp;</h4>
+  <label>
+    &emsp; BM25
+  <input type="number" id="bm25-percent" name="bm25-percent" min="0" max="1" step="0.01" value="0.0">
+  </label>
+  <label>
+    &emsp; Fixed-size Chunks
+  <input type="number" id="fixed-size-chunks-percent" name="fixed-size-chunks-percent" min="0" max="1" step="0.01" value="0.0">
+  </label>
+  <label>
+    &emsp; Semantic Chunking 
+  <input type="number" id="semantic-chunking-percent" name="semantic-chunking-percent" min="0" max="1" step="0.01" value="0.0">
+  </label>
+  </details>
+  <br><br>
   <input type="text" id="user-query" name="user-query" value="Enter your query here">
   <input type="submit" value="Submit">
 {% endblock content %}
