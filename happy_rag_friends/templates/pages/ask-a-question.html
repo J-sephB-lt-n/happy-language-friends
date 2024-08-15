@@ -2,6 +2,8 @@
 
 {% block header %}
   <h2>{% block title %}Ask a Question{% endblock title %}</h2>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tooltips.css') }}">
+
 {% endblock header %}
 
 {% block content %}
@@ -12,20 +14,52 @@
   </select>
   <br><br>
   <details>
-  <summary>RAG Settings</summary>
-  <h4 style="display:inline">Chunk Strategy Mix:&emsp;</h4>
-  <label>
-    &emsp; BM25
-  <input type="number" id="bm25-percent" name="bm25-percent" min="0" max="1" step="0.01" value="0.0">
-  </label>
-  <label>
-    &emsp; Fixed-size Chunks
-  <input type="number" id="fixed-size-chunks-percent" name="fixed-size-chunks-percent" min="0" max="1" step="0.01" value="0.0">
-  </label>
-  <label>
-    &emsp; Semantic Chunking 
-  <input type="number" id="semantic-chunking-percent" name="semantic-chunking-percent" min="0" max="1" step="0.01" value="0.0">
-  </label>
+    <summary>RAG Settings</summary>
+    <div style="padding-left: 1rem;">
+      <div>
+        <h4 style="display:inline">Chunking Method</h4>
+        <p style="display:inline" class="tooltip-above" data-tooltip="Here is the text inside the tooltip">&#9432;</p>
+      </div>
+        <form style="display:inline">
+            <div style="display:inline">
+                <label>
+                    <input type="radio" name="chunking" value="fixed-size">
+                    Fixed-size Chunks 
+                    <p style="display:inline" class="tooltip-above" data-tooltip="Here is the text inside the tooltip">&#9432;</p>
+                    <p style="display:inline">&emsp;</p>
+                </label>
+                <label>
+                    <input type="radio" name="chunking" value="paragraph">
+                    By Paragraph 
+                    <p style="display:inline" class="tooltip-above" data-tooltip="Here is the text inside the tooltip">&#9432;</p>
+                    <p style="display:inline">&emsp;</p>
+                </label>
+                <label>
+                    <input type="radio" name="chunking" value="semantic">
+                    Semantic chunking 
+                    <p style="display:inline" class="tooltip-above" data-tooltip="Here is the text inside the tooltip">&#9432;</p>
+                    <p style="display:inline">&emsp;</p>
+                </label>
+            </div>
+        </form>
+        <br>
+      <div>
+        <h4 style="display:inline">Chunk Vectorisation</h4>
+        <p style="display:inline" class="tooltip-above" data-tooltip="Here is the text inside the tooltip">&#9432;</p>
+      </div>
+      <label>
+        &emsp; BM25
+      <input type="number" id="bm25-percent" name="bm25-percent" min="0" max="1" step="0.01" value="0.0">
+      </label>
+      <label>
+        &emsp; Embeddings
+      <input type="number" id="embeddings-percent" name="embeddings-percent" min="0" max="1" step="0.01" value="0.0">
+      </label>
+      <label>
+        &emsp; Hypothetical Document Embeddings (HyDE) 
+        <input type="number" id="hyde-percent" name="hyde-percent" min="0" max="1" step="0.01" value="0.0">
+      </label>
+    </div>
   </details>
   <br><br>
   <input type="text" id="user-query" name="user-query" value="Enter your query here">
