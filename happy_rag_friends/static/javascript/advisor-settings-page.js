@@ -1,6 +1,14 @@
 function getAdvisorsData() {
+  // fetch list of advisors and their metadata from the database
   return fetch("http://127.0.0.1:5000/backend/get_advisor_details")
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        const error_message = `HTTP error ${response.status} fetching model list from /backend/get_advisor_details`;
+        alert(error_message);
+        throw new Error(error_message);
+      }
+      return response.json();
+    })
     .then((data) => {
       const advisorsData = data.reduce((acc, advisor) => {
         acc[advisor.advisor_name] = advisor;
@@ -16,23 +24,17 @@ function getAdvisorsData() {
     });
 }
 
-function updateAdvisorSelectList() {
+function updateAdvisorSelectList(advisorsData) {
+  // populate the "select advisor" dropdown list using the provided advisors data
   const selectAdvisor = document.getElementById("select-advisor");
   selectAdvisor.options.length = 0; // clear list
 
-  getAdvisorsData()
-    .then((advisorsData) => {
-      Object.values(advisorsData).forEach((advisor) => {
-        const option = document.createElement("option");
-        option.value = advisor.advisor_name;
-        option.textContent = advisor.advisor_name;
-        selectAdvisor.appendChild(option);
-      });
-    })
-    .catch((error) => {
-      alert(`Error updating advisor select list`);
-      console.error("Error updating advisor select list:", error);
-    });
+  Object.values(advisorsData).forEach((advisor) => {
+    const option = document.createElement("option");
+    option.value = advisor.advisor_name;
+    option.textContent = advisor.advisor_name;
+    selectAdvisor.appendChild(option);
+  });
   const option = document.createElement("option");
   option.value = "create-new-advisor";
   option.textContent = "[+] Create New Advisor";
@@ -41,51 +43,71 @@ function updateAdvisorSelectList() {
   selectAdvisor.selectedIndex = 0;
 }
 
-function getLLMList() {
-  return fetch("http://127.0.0.1:5000/backend/get_llm_list")
+function getLLMsData() {
+  // fetch list of models and their metadata from the database
+  return fetch("http://127.0.0.1:5000/backend/get_llm_details")
     .then((response) => {
       if (!response.ok) {
-        const error_message = `HTTP error ${response.status} fetching model list from /backend/get_llm_list`;
+        const error_message = `HTTP error ${response.status} fetching model list from /backend/get_llm_details`;
         alert(error_message);
         throw new Error(error_message);
       }
       return response.json();
     })
-    .then((data) => data)
+    .then((data) => {
+      const LLMsData = data.reduce((acc, llm) => {
+        acc[llm.llm_name] = llm;
+        return acc;
+      }, {});
+      return LLMsData;
+    })
     .catch((error) => {
-      const error_message = `Error fetching model list from /backend/get_llm_list: ${error}`;
+      const error_message = `Error fetching model list from /backend/get_llm_details: ${error}`;
       alert(error_message);
       throw new Error(error_message);
     });
 }
 
-function updateLLMSelectList() {
+function updateLLMSelectList(LLMsData) {
+  // populate "select model" list using provided model data
   const selectLLM = document.getElementById("select-llm");
-  getLLMList()
-    .then((llmList) => {
-      selectLLM.innerHTML = ""; // clear existing options
-      Object.entries(llmList).forEach(([llm_name, llm_info]) => {
-        const option = document.createElement("option");
-        option.value = "TODO";
-        option.textContent = llm_name;
-        selectLLM.appendChild(option);
-      });
-    })
-    .catch((error) => {
-      console.error("Error in updateLLMSelectList()", error);
-    });
+  selectLLM.options.length = 0; // clear list
+
+  Object.values(LLMsData).forEach((llm) => {
+    const option = document.createElement("option");
+    option.value = llm.llm_name;
+    option.textContent = llm.llm_name;
+    selectLLM.appendChild(option);
+  });
 }
 
-function updateElementsOnAdvisorSelect() {
-  const advisorNameInput = document.getElementById("advisor-name");
-  const advisorPersonalityInput = document.getElementById(
-    "advisor-personality",
-  );
+function updateAdvisorInputBoxes(advisorsData) {
+  // const advisorNameInput = document.getElementById("advisor-name");
+  // const advisorPersonalityInput = document.getElementById(
+  //   "advisor-personality",
+  // );
+  console.log(advisorsData);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  updateAdvisorSelectList();
-  updateLLMSelectList();
+  getAdvisorsData()
+    .then((advisorsData) => {
+      updateAdvisorSelectList(advisorsData);
+      updateAdvisorInputBoxes(advisorsData);
+    })
+    .catch((error) => {
+      alert("failed to update advisor data on DOM content load");
+      console.error("failed to update advisor data on DOM content load", error);
+    });
+  getLLMsData()
+    .then((LLMsData) => {
+      updateLLMSelectList(LLMsData);
+    })
+    .catch((error) => {
+      alert("failed to update LLM data on DOM content load");
+      console.error("failed to update LLM data on DOM content load", error);
+    });
+  // updateLLMSelectList();
   // fetch("http://127.0.0.1:5000/backend/get_advisor_details")
   //   .then((response) => response.json())
   //   .then((data) => {

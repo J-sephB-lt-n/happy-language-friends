@@ -56,15 +56,15 @@ def get_advisor_details():
 #     status_text, status_code =
 
 
-@bp.route("/backend/get_llm_list", methods=["GET"])
+@bp.route("/backend/get_llm_details", methods=["GET"])
 def get_llm_list():
     available_models: list[str] = llm.list_available_models()
-    downloaded_models: list[str] = llm.list_downloaded_models()
+    # downloaded_models: list[str] = llm.list_downloaded_models()
     return flask.jsonify(
-        {
-            llm_name: {"downloaded": llm_name in downloaded_models}
+        [
+            {"llm_name": llm_name, "download_status": "not_started"}
             for llm_name in available_models
-        }
+        ]
     )
 
 
