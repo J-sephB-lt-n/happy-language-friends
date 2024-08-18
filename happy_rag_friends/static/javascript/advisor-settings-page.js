@@ -82,11 +82,15 @@ function updateLLMSelectList(LLMsData) {
 }
 
 function updateAdvisorInputBoxes(advisorsData) {
-  // const advisorNameInput = document.getElementById("advisor-name");
-  // const advisorPersonalityInput = document.getElementById(
-  //   "advisor-personality",
-  // );
-  console.log(advisorsData);
+  const selectAdvisorInput = document.getElementById("select-advisor");
+  const selectedAdvisorName = selectAdvisorInput.value;
+  const advisorNameInput = document.getElementById("advisor-name");
+  advisorNameInput.value = selectedAdvisorName;
+  const advisorPersonalityInput = document.getElementById(
+    "advisor-personality",
+  );
+  advisorPersonalityInput.value =
+    advisorsData[selectedAdvisorName].personality_description;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
