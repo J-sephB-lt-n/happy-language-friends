@@ -85,12 +85,20 @@ function updateAdvisorInputBoxes(advisorsData) {
   const selectAdvisorInput = document.getElementById("select-advisor");
   const selectedAdvisorName = selectAdvisorInput.value;
   const advisorNameInput = document.getElementById("advisor-name");
-  advisorNameInput.value = selectedAdvisorName;
   const advisorPersonalityInput = document.getElementById(
     "advisor-personality",
   );
-  advisorPersonalityInput.value =
-    advisorsData[selectedAdvisorName].personality_description;
+  const applyAdvisorChangesButton = document.getElementById("apply-changes");
+  if (advisorsData[selectedAdvisorName]) {
+    advisorNameInput.value = selectedAdvisorName;
+    advisorPersonalityInput.value =
+      advisorsData[selectedAdvisorName].personality_description;
+    applyAdvisorChangesButton.value = "Update Advisor";
+  } else {
+    advisorNameInput.value = "<advisor name here>";
+    advisorPersonalityInput.value = "<advisor personality description here>";
+    applyAdvisorChangesButton.value = "Create New Advisor";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -103,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("failed to update advisor data on DOM content load");
       console.error("failed to update advisor data on DOM content load", error);
     });
+
   getLLMsData()
     .then((LLMsData) => {
       updateLLMSelectList(LLMsData);
@@ -111,6 +120,20 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("failed to update LLM data on DOM content load");
       console.error("failed to update LLM data on DOM content load", error);
     });
+
+  const selectAdvisor = document.getElementById("select-advisor");
+  selectAdvisor.addEventListener("change", function () {
+    getAdvisorsData()
+      .then((advisorsData) => {
+        updateAdvisorInputBoxes(advisorsData);
+      })
+      .catch((error) => {
+        alert("failed to update advisor input boxes");
+        console.error("failed to update advisor input boxes:", error);
+      });
+  });
+
+  // Update advisor-name and advisor-personality input boxes when different advisor is selected
   // updateLLMSelectList();
   // fetch("http://127.0.0.1:5000/backend/get_advisor_details")
   //   .then((response) => response.json())
@@ -163,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
   //       }
   //     }
   //
-  //     selectAdvisor.addEventListener("change", updateInputBoxContents); // Update advisor-name and advisor-personality input boxes when different advisor is selected
   //     updateInputBoxContents(); // update input boxes on page load
   //   })
   // .catch((error) => console.error("Error fetching advisor details:", error));
