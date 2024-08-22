@@ -1,6 +1,7 @@
 """Functions for interacting with the database"""
 
 import contextlib
+import re
 import sqlite3
 from typing import Optional
 
@@ -21,13 +22,20 @@ def create_advisor(
 ) -> tuple[str, int]:
     """Adds an advisor to the database"""
     try:
-        advisor = Advisor(
+        advisor: Advisor = Advisor(
             advisor_name=advisor_name,
             personality_description=personality_description,
             llm_name=llm_name,
         )
     except pydantic.ValidationError as error:
         return f"UNPROCESSABLE ENTITY\n{error}", 422
+
+    # create document storage directory
+    (
+        config.PROJECT_DATA_PATH
+        / re.sub(r"[^a-zA-Z0-9_]", "_", advisor_name)
+        / "knowledge_base"
+    ).mkdir(parents=True)
 
     with contextlib.closing(sqlite3.connect(config.DB_PATH)) as conn:
         cursor = conn.cursor()
