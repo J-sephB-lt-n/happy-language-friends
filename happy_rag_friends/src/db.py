@@ -2,6 +2,7 @@
 
 import contextlib
 import sqlite3
+from typing import Optional
 
 import pydantic
 
@@ -15,7 +16,9 @@ def sqlite_dict_factory(cursor, row):
     return {key: value for key, value in zip(fields, row)}
 
 
-def create_advisor(advisor_name: str, personality_description: str, llm_name: str):
+def create_advisor(
+    advisor_name: str, personality_description: str, llm_name: Optional[str]
+) -> tuple[str, int]:
     """Adds an advisor to the database"""
     try:
         advisor = Advisor(

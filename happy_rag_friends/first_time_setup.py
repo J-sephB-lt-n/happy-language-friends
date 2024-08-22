@@ -5,6 +5,7 @@ import warnings
 from pathlib import Path
 
 from happy_rag_friends import config
+from happy_rag_friends.src.db import create_advisor
 
 
 class PersistentDataWarning(Warning):
@@ -19,7 +20,7 @@ def create_package_data_dir():
 
     if not config.DB_PATH.exists():
         warnings.warn(
-            f"\nPackage data written to {package_data_dir} is not deleted on 'pip uninstall happy-rag-friends' - you will need to delete this data using `happy-rag-friends uninstall` prior to `pip uninstall happy-rag-friends`",
+            f"\nPackage data written to {package_data_dir} is not deleted on 'pip uninstall happy-rag-friends' - you will need to delete this data using `happy-rag-friends uninstall` prior to running `pip uninstall happy-rag-friends`",
             PersistentDataWarning,
         )
         conn = sqlite3.connect(config.DB_PATH)
@@ -32,12 +33,17 @@ def create_package_data_dir():
         llm_name TEXT
     )
     ;
-    
-    INSERT INTO advisors (advisor_name, personality_description, llm_name)
-    VALUES ('D. Folt', 'a knowledgeable advisor.', NULL)
-    ;
+    -- INSERT INTO advisors (advisor_name, personality_description, llm_name)
+    -- VALUES ('D. Folt', 'a knowledgeable advisor.', NULL)
+    -- ;
     """
         )
         conn.commit()
         conn.close()
+
+        create_advisor(
+            advisor_name="D. Fault",
+            personality_description="a helpful advisor",
+            llm_name=None,
+        )
         print(f"created package database at {config.DB_PATH}")
