@@ -6,24 +6,65 @@
 {% endblock header %}
 
 {% block content %}
-  <label for="select-advisor">Select an Advisor: </label>
-  <select name="select-advisor" id="select-advisor">
-    <option value="temp-placeholder">..loading..</option>
-  </select>
-  <form id="delete-advisor" style="display:inline" onsubmit="return confirmDeleteAdvisor();">
-    <input type="submit" value="&#128465;">
-  </form>
-  <br><br>
-  <input type="text" id="advisor-name" name="advisor-name" value="">
-  <!--<br><br>-->
-  <p style="display:inline">&emsp; is &emsp;</p>
-  <input type="text" id="advisor-personality" name="advisor-personality" value="" size="80" maxlength="500">
-  <br><br>
-  <label for="select-llm">Select a Language Model: </label>
-  <select name="select-llm" id="select-llm">
-    <option value="temp-placeholder">..loading..</option>
-  </select>
-  <br><br>
-  <input type="submit" id="apply-changes" value="Apply Changes" onclick="createOrUpdateAdvisor()">
-  <input type="submit" id="discard-changes" value="Discard Changes">
+
+<label for="select-advisor">Select an Advisor: </label>
+<select name="select-advisor" id="select-advisor">
+  <option value="temp-placeholder">..loading..</option>
+</select>
+<form
+  id="delete-advisor"
+  style="display: inline"
+  onsubmit="return confirmDeleteAdvisor();"
+>
+  <input type="submit" value="&#128465;" />
+</form>
+
+<br /><br />
+
+<input type="text" id="advisor-name" name="advisor-name" value="" />
+<p style="display: inline">&emsp; is &emsp;</p>
+<input
+  type="text"
+  id="advisor-personality"
+  name="advisor-personality"
+  value=""
+  size="80"
+  maxlength="500"
+/>
+
+<br /><br />
+
+<label for="select-llm">Select a Language Model: </label>
+<select name="select-llm" id="select-llm">
+  <option value="temp-placeholder">..loading..</option>
+</select>
+
+<br /><br />
+
+<label for="knowledge-base">Knowledge Base: </label>
+<select name="knowledge-base" id="knowledge-base">
+  <option value="temp-placeholder">..loading..</option>
+</select>
+<form
+  id="view-document"
+  style="display: inline"
+>
+  <input type="submit" value="&#128065;" />
+</form>
+<form
+  id="delete-document"
+  style="display: inline"
+>
+  <input type="submit" value="&#128465;" />
+</form>
+
+<br /><br />
+
+<input
+  type="submit"
+  id="apply-changes"
+  value="Apply Changes"
+  onclick="createOrUpdateAdvisor()"
+/>
+<input type="submit" id="discard-changes" value="Discard Changes" />
 {% endblock content %}

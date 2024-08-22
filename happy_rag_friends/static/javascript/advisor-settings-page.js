@@ -89,15 +89,18 @@ function updateAdvisorInputBoxes(advisorsData) {
     "advisor-personality",
   );
   const applyAdvisorChangesButton = document.getElementById("apply-changes");
+  const deleteAdvisorForm = document.getElementById("delete-advisor");
   if (advisorsData[selectedAdvisorName]) {
     advisorNameInput.value = selectedAdvisorName;
     advisorPersonalityInput.value =
       advisorsData[selectedAdvisorName].personality_description;
     applyAdvisorChangesButton.value = "Update Advisor";
+    deleteAdvisorForm.style.display = "inline";
   } else {
     advisorNameInput.value = "<advisor name here>";
     advisorPersonalityInput.value = "<advisor personality description here>";
     applyAdvisorChangesButton.value = "Create New Advisor";
+    deleteAdvisorForm.style.display = "none"; // don't show delete advisor button
   }
 }
 
