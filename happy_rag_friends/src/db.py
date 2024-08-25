@@ -33,6 +33,7 @@ def create_advisor(
     # create document storage directory
     (
         config.PROJECT_DATA_PATH
+        / "advisors"
         / re.sub(r"[^a-zA-Z0-9_]", "_", advisor_name)
         / "knowledge_base"
     ).mkdir(parents=True)
